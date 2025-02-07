@@ -1,37 +1,56 @@
-/*
-  Blink
+const int LED = 13; // Utilisation de la broche 13
+const int dureeAllume = 2000;
+const int dureeEteint = 2000;
+const int dureeCligno = 250; // 250ms ON, 250ms OFF
+const int nbCligno = ceil(3/2)+1; // Calculé pour 2413335
+const int dureeVariation = 2048;
+const int niveauPWM = 256;
 
-  Turns an LED on for one second, then off for one second, repeatedly.
 
-  Most Arduinos have an on-board LED you can control. On the UNO, MEGA and ZERO
-  it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
-  the correct LED pin independent of which board is used.
-  If you want to know what pin the on-board LED is connected to on your Arduino
-  model, check the Technical Specs of your board at:
-  https://www.arduino.cc/en/Main/Products
-
-  modified 8 May 2014
-  by Scott Fitzgerald
-  modified 2 Sep 2016
-  by Arturo Guadalupi
-  modified 8 Sep 2016
-  by Colby Newman
-
-  This example code is in the public domain.
-
-  https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink
-*/
-
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+void allumerLED() {
+    Serial.println("Allume - 2413335");
+    digitalWrite(LED, HIGH);
+    delay(dureeAllume);
+    digitalWrite(LED, LOW);
+     delay(dureeEteint);
 }
 
-// the loop function runs over and over again forever
+void clignoterLED() {
+    Serial.println("Clignotement - 2413335");
+    for (int i = 0; i < nbCligno; i++) {
+        digitalWrite(LED, HIGH);
+        delay(dureeCligno);
+        digitalWrite(LED, LOW);
+        delay(dureeCligno);
+    }
+}
+
+void variation() {
+ Serial.println("Variation - 2413335"); 
+const int delaiVariation= dureeVariation/niveauPWM;
+for(int i= 255; i >=0;i--){
+  analogWrite(LED, i);
+  delay(delaiVariation);
+}
+}
+
+
+
+void eteindreLED() {
+    Serial.println("Éteint - 2413335");
+    digitalWrite(LED, LOW);
+    delay(dureeEteint);
+}
+
+void setup() {
+    pinMode(LED, OUTPUT);
+    Serial.begin(9600);
+    
+}
+
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
+    allumerLED();
+    clignoterLED();
+    variation();
+    eteindreLED();
 }
